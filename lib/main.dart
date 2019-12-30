@@ -56,9 +56,9 @@ class BarRow extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.end,
       children: <Widget>[
         for(int i=0;i<valueController.numBars;i++) ValueListenableBuilder(
-          valueListenable: valueController.colorNotifiers[i],
+          valueListenable: valueController.valueNotifiers[i],
           builder: (context,value,child){
-            return Bar(valueController.values[i], value);
+            return Bar(valueController.values[i]);
           },
         )
       
@@ -73,8 +73,8 @@ class Bar extends StatefulWidget {
   double height;
   double indi;
   Color barColor = Colors.blue;
-  Bar(this.height,this.barColor){
-    barColor = Colors.blue;
+  Bar(this.height){
+    // barColor = Colors.blue;
   }
   @override
   _BarState createState() => _BarState();
@@ -102,28 +102,29 @@ class _BarState extends State<Bar> {
 class ValueController {
   int numBars;
   List<double> values;
-  // List<ValueNotifier<double>> valueNotifiers;
-  List<ValueNotifier<Color>>colorNotifiers;
+  List<ValueNotifier<double>> valueNotifiers;
+  // List<ValueNotifier<Color>>colorNotifiers;
   ValueController(this.numBars){
     var randomNumberGenerator = new Random();
     values = new List<double>(numBars);
-    colorNotifiers = new List<ValueNotifier<Color>>(numBars);
-    // valueNotifiers = new List<ValueNotifier<double>> (numBars);
+    // colorNotifiers = new List<ValueNotifier<Color>>(numBars);
+    valueNotifiers = new List<ValueNotifier<double>> (numBars);
     for(int i=0;i<numBars;i++){
       values[i]  = randomNumberGenerator.nextDouble();
-      // valueNotifiers[i] = new ValueNotifier(values[i]);
-      colorNotifiers[i] = new ValueNotifier(Colors.blue);
+      valueNotifiers[i] = new ValueNotifier(values[i]);
+      // colorNotifiers[i] = new ValueNotifier(Colors.blue);
     }
   }
   void swapValues(int index1,int index2) async{ //swap values in valueNotifiers
-      colorNotifiers[index1].value = Colors.yellow;
-      colorNotifiers[index2].value = Colors.purple;
-      await wait();
+      // colorNotifiers[index1].value = Colors.yellow;
+      // colorNotifiers[index2].value = Colors.purple;
       double tempVal = values[index1];
       values[index1] = values[index2];
       values[index2] = tempVal;
-      colorNotifiers[index1].value = Colors.blue;
-      colorNotifiers[index2].value = Colors.blue;
+      valueNotifiers[index1].value = values[index1];
+      valueNotifiers[index2].value = values[index2];
+      // colorNotifiers[index1].value = Colors.blue;
+      // colorNotifiers[index2].value = Colors.blue;
       // values[index1] = valueNotifiers[index1].value;
       // values[index2] = valueNotifiers[index2].value;
   }
@@ -132,6 +133,7 @@ class ValueController {
       for(int j=0;j<numBars-1;j++){
           if(values[j+1] > values[j]){
             swapValues(j+1,j);
+            await wait();
             }
           // valueNotifiers[]
       }
