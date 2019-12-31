@@ -174,7 +174,7 @@ class RadixSort{
     radixBase = 10;
     divi = 10;
   }
- Future sort() async {
+ void sort() async {
     ques =  new List<Queue>(radixBase);
     for(int i=0;i<radixBase;i++) ques[i] = new Queue();
      await radixSort();
@@ -183,7 +183,7 @@ class RadixSort{
           valueController.changeNotifiers[i].value = 2;
       }
   }
-  Future doQueueOp() async{
+  Future doQueueOp() async {
     for(int i=0;i<radixBase;i++) ques[i] = new Queue();
       for(int i=0;i<n;i++){
         int index = (valueController.values[i] ~/ divi)% radixBase;
@@ -203,7 +203,7 @@ class RadixSort{
         }
       }
   }
-  Future radixSort() async{
+  void radixSort() async{
       int maxi = valueController.values[0];
       for(int i=1;i<n;i++){
         if(valueController.values[i] > maxi){
@@ -212,8 +212,8 @@ class RadixSort{
       }
       divi = 1;
       while(true){
-        await wait(valueController.speed.toInt());        
-        doQueueOp();
+        await wait(valueController.speed.toInt());              
+        await doQueueOp();
         await wait(valueController.speed.toInt());        
         if(divi > maxi){
           break;

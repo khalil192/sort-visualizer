@@ -41,11 +41,11 @@ class _MyAppState extends State<MyApp> {
         quickSort.sort();
       }
       break;
-      // case "radix sort" :{
-      //   RadixSort radixSort = new RadixSort(valueController);
-      //   radixSort.sort();
-      // }
-      // break;
+      case "radix sort" :{
+        RadixSort radixSort = new RadixSort(valueController);
+        radixSort.sort();
+      }
+      break;
     }
       
   }
