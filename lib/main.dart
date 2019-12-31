@@ -41,6 +41,11 @@ class _MyAppState extends State<MyApp> {
         quickSort.sort();
       }
       break;
+      // case "radix sort" :{
+      //   RadixSort radixSort = new RadixSort(valueController);
+      //   radixSort.sort();
+      // }
+      // break;
     }
       
   }
@@ -73,7 +78,7 @@ class _MyAppState extends State<MyApp> {
                               sortMethod = newValue;
                             });
                           },
-                          items: <String>['bubble sort', 'selection sort', 'merge sort', 'quick sort']
+                          items: <String>['bubble sort', 'selection sort', 'merge sort', 'quick sort','radix sort']
                             .map<DropdownMenuItem<String>>((String value) {
                               return DropdownMenuItem<String>(
                                 value: value,
