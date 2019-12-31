@@ -36,6 +36,11 @@ class _MyAppState extends State<MyApp> {
         mergeSort.sort();
       }
       break;
+      case "quick sort" :{
+        QuickSort quickSort = new QuickSort(valueController);
+        quickSort.sort();
+      }
+      break;
     }
       
   }
