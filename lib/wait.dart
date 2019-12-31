@@ -4,7 +4,9 @@ Future sleepSum(int valueOne, int valueTwo) {
   return Future.delayed(const Duration(seconds: 1), () => valueOne + valueTwo);
 }
 
-Future wait({double speed = 0.9}) {
-  final milliseconds = lerpDouble(100, 1, speed).toInt();
-  return Future.delayed(Duration(milliseconds: milliseconds));
+Future wait(int speed) {
+  // final milliseconds = lerpDouble(100, 1, speed).toInt();
+  // return Future.delayed(Duration(milliseconds: milliseconds));
+  return Future.delayed(Duration(milliseconds: 120- speed));
+
 }

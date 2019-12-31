@@ -1,38 +1,161 @@
 import 'package:flutter/material.dart';
+import 'package:sort/bubbleSort.dart';
+import 'package:sort/valueController.dart';
 import 'dart:math';
 import 'wait.dart';
 
-int numBars = 50;
-
+double numBars = 30;
+double barWidth = 5;
+double speed = 90;
+String sortMethod = "bubble sort";
 void main() {
   runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+
+  void sortStartVisualize(ValueController valueController){
+    switch(sortMethod){
+      case "bubble sort" : {
+      BubbleSort bubbleSort = new BubbleSort(valueController);
+      bubbleSort.sort();
+      }
+      break;
+      case "selection sort" :{
+        SelectionSort selectionSort = new SelectionSort(valueController);
+        selectionSort.sort();
+      }
+      break;
+    }
+      
+  }
+
   @override
   Widget build(BuildContext context){
-    ValueController valueController = new ValueController(numBars);
-
+    // int numBars = 20;
+    ValueController valueController = new ValueController(numBars.toInt(),speed);
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          title: Text('BubbleSort Visualizer')
+          title: Text('Sort Visualizer'),
+          actions: <Widget>[
+            Row(
+              children: <Widget>[
+                 DropdownButton<String>(
+                          value: sortMethod,
+                          icon: Icon(Icons.arrow_downward),
+                          iconSize: 24,
+                          elevation: 16,
+                          style: TextStyle(
+                            color: Colors.deepPurple
+                          ),
+                          underline: Container(
+                            height: 2,
+                            color: Colors.deepPurpleAccent,
+                          ),
+                          onChanged: (String newValue) {
+                            setState(() {
+                              sortMethod = newValue;
+                            });
+                          },
+                          items: <String>['bubble sort', 'selection sort', 'merge sort', 'quick sort']
+                            .map<DropdownMenuItem<String>>((String value) {
+                              return DropdownMenuItem<String>(
+                                value: value,
+                                child: Text(value),
+                              );
+                            })
+                            .toList(),
+                        ),
+                      Container(
+                        width: 300,
+                        height: 50,
+                        child: Column(
+                          children: <Widget>[
+                      Container(
+                        width: 300,
+                        height: 20,
+                        child: Slider(
+                            min: 5.0,
+                            max: 100,
+                            activeColor: Colors.black,
+                            inactiveColor: Colors.pink,
+                            value: numBars,
+                            onChanged: (newRating){
+                              setState(() {
+                                numBars = newRating;
+                              });
+                          },
+                    ),
+
+                      ),
+                      Text(
+                              'data size',
+                              style: TextStyle(
+                                color: Colors.blue[1000],
+                                fontSize: 20
+                              ),
+                            ), 
+                          ],
+                        ),
+                        ),
+                     
+                 Container(
+                        width: 300,
+                        height: 50,
+                        child: Column(
+                          children: <Widget>[
+                      Container(
+                        width: 300,
+                        height: 20,
+                        child: Slider(
+                            min: 5.0,
+                            max: 120,
+                            activeColor: Colors.black,
+                            inactiveColor: Colors.pink,
+                            value: speed,
+                            onChanged: (newRating){
+                              setState(() {
+                                speed = newRating;
+                              });
+                          },
+                    ),
+
+                      ),
+                      Text(
+                              'speed',
+                              style: TextStyle(
+                                color: Colors.blue[1000],
+                                fontSize: 20
+                              ),
+                            ), 
+                          ],
+                        ),
+                        ),
+            ],)
+          ],
         ),
-        body: Container(
-          child: Padding(
-            padding: const EdgeInsets.all(18.0),
-            child: Align(
-              alignment: Alignment.bottomCenter,
-              child: SizedBox(
-                width: 1000,
-                height: 500,
-                child: BarRow(valueController)
-                ),
+        body: SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.all(18.0),
+              child: Align(
+                alignment: Alignment.bottomCenter,
+                child: SizedBox(
+                  width: 1000,
+                  height: 500,
+                  child: BarRow(valueController)
+                  ),
+              ),
             ),
-          ),
         ),
         floatingActionButton: FloatingActionButton(
-          onPressed: valueController.bubbleSort,
+          child: Text('sort'),
+          onPressed: () => sortStartVisualize(valueController) ,
         ),
         ),
       );
@@ -52,7 +175,7 @@ class BarRow extends StatelessWidget {
     //   },
     // );
     return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.end,
       children: <Widget>[
         for(int i=0;i<valueController.numBars;i++) ValueListenableBuilder(
@@ -97,9 +220,9 @@ class _BarState extends State<Bar> {
       valueListenable: widget.change,
       builder: (context,value,child){ 
           return Padding(
-        padding: const EdgeInsets.all(5.0),
+        padding: const EdgeInsets.all(2.0),
         child: SizedBox(
-          width: 2,
+          width: barWidth,
           height: widget.val.value*500,
           child: Container(
             color: findColor(value),
@@ -109,70 +232,4 @@ class _BarState extends State<Bar> {
     }
     );
 }
-}
-
-class ValueController {
-  int numBars;
-  List<double> values;
-  List<ValueNotifier<double>> valueNotifiers;
-  List<ValueNotifier<int>>changeNotifiers;
-  ValueController(this.numBars){
-    var randomNumberGenerator = new Random();
-    values = new List<double>(numBars);
-    changeNotifiers = new List<ValueNotifier<int>>(numBars);
-    valueNotifiers = new List<ValueNotifier<double>> (numBars);
-    for(int i=0;i<numBars;i++){
-      values[i]  = randomNumberGenerator.nextDouble();
-      valueNotifiers[i] = new ValueNotifier(values[i]);
-      changeNotifiers[i] = new ValueNotifier(0);
-    }
-  }
-  void swapValues(int index1,int index2) async{ //swap values in valueNotifiers
-      // colorNotifiers[index1].value = Colors.yellow;
-      // colorNotifiers[index2].value = Colors.purple;
-      double tempVal = values[index1];
-      values[index1] = values[index2];
-      values[index2] = tempVal;
-      valueNotifiers[index1].value = values[index1];
-      valueNotifiers[index2].value = values[index2];
-      // colorNotifiers[index1].value = Colors.blue;
-      // colorNotifiers[index2].value = Colors.blue;
-      // values[index1] = valueNotifiers[index1].value;
-      // values[index2] = valueNotifiers[index2].value;
-  }
-  void bubbleSort() async{
-    for(int i = 0;i<numBars;i++){
-      for(int j=0;j<numBars-1;j++){
-          if(values[j+1] < values[j]){
-            changeNotifiers[j].value = 1;
-            changeNotifiers[j+1].value = 1;
-            swapValues(j+1,j);
-            await wait();
-            changeNotifiers[j].value = 0;
-            changeNotifiers[j+1].value = 0;
-            await wait();
-            // print('swapped');
-            // print(j);
-            }
-      }
-        // print('changed color');
-        // print(numBars-i-1);
-        changeNotifiers[numBars-i-1].value = 2;
-    }
-  }
-  // void selectionSort() async{
-  //     for(int i=0;i<numBars;i++){
-  //       int minIndex = i;
-  //       for(int j = i;j<numBars;j++){
-  //           if(valueNotifiers[j].value < valueNotifiers[minIndex].value){
-  //             minIndex = j;
-  //           }
-  //       }
-  //       swapValues(minIndex,i);
-  //         await wait();
-  //     }
-  // }
-  Future pause() async {
-    await wait(speed: 0.5);
-  }
 }
