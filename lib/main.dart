@@ -31,6 +31,11 @@ class _MyAppState extends State<MyApp> {
         selectionSort.sort();
       }
       break;
+      case "merge sort" :{
+        MergeSort mergeSort = new MergeSort(valueController);
+        mergeSort.sort();
+      }
+      break;
     }
       
   }
@@ -207,7 +212,7 @@ class Bar extends StatefulWidget {
 
 class _BarState extends State<Bar> {
   Color findColor(int num){
-    Color currColor = widget.change.value ==0 ? Colors.blue : Colors.black;
+    Color currColor = widget.change.value ==0 ? Colors.blue: Colors.purple;
     if(widget.change.value ==2){
       currColor = Colors.green;
     }
