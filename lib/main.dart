@@ -205,11 +205,11 @@ class BarRow extends StatelessWidget {
 class Bar extends StatefulWidget {
   double height;
   int isChanged;
-  ValueNotifier<double> val;
+  ValueNotifier<int> val;
   ValueNotifier<int>change;
   Color barColor = Colors.blue;
   Bar(this.val,this.change){
-    // barColor = Colors.blue;
+    // height = val.value.toDouble();
   }
   @override
   _BarState createState() => _BarState();
@@ -233,7 +233,7 @@ class _BarState extends State<Bar> {
         padding: const EdgeInsets.all(2.0),
         child: SizedBox(
           width: barWidth,
-          height: widget.val.value*500,
+          height: widget.val.value.toDouble()*5,
           child: Container(
             color: findColor(value),
           ),

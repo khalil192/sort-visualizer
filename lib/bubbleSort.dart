@@ -71,8 +71,8 @@ class MergeSort{
   Future merge(int l,int m,int r) async{
     int n1 = m-l+1;
     int n2 = r-m;
-    List<double> list1 = new List<double>(n1);
-    List<double> list2 = new List<double>(n2);
+    List<int> list1 = new List<int>(n1);
+    List<int> list2 = new List<int>(n2);
     for(int i=0;i<n1;i++)   list1[i] = valueController.values[i+l];
     for(int i=0;i<n2;i++)   list2[i] = valueController.values[i+m+1];
     int i = 0,j=0,curr = l;
@@ -137,7 +137,7 @@ class QuickSort{
     }
   }
   Future<int> partition(int l,int r) async{
-    double pivotElement = valueController.values[r];
+    int pivotElement = valueController.values[r];
     int i = l- 1;
     for(int j = l;j<r;j++){
       if(valueController.values[j] < pivotElement){
@@ -162,3 +162,5 @@ class QuickSort{
     return Future.value(i+1);
   }
 }
+
+

@@ -8,17 +8,17 @@ import 'package:sort/wait.dart';
 
 class ValueController {
   int numBars;
-  List<double> values;
+  List<int> values;
   double speed;
-  List<ValueNotifier<double>> valueNotifiers;
+  List<ValueNotifier<int>> valueNotifiers;
   List<ValueNotifier<int>>changeNotifiers;
   ValueController(this.numBars,this.speed){
     var randomNumberGenerator = new Random();
-    values = new List<double>(numBars);
+    values = new List<int>(numBars);
     changeNotifiers = new List<ValueNotifier<int>>(numBars);
-    valueNotifiers = new List<ValueNotifier<double>> (numBars);
+    valueNotifiers = new List<ValueNotifier<int>> (numBars);
     for(int i=0;i<numBars;i++){
-      values[i]  = randomNumberGenerator.nextDouble();
+      values[i]  = (randomNumberGenerator.nextDouble() * 100 ).toInt();
       valueNotifiers[i] = new ValueNotifier(values[i]);
       changeNotifiers[i] = new ValueNotifier(0);
     }
@@ -26,7 +26,7 @@ class ValueController {
   void swapValues(int index1,int index2) async{ //swap values in valueNotifiers
       // colorNotifiers[index1].value = Colors.yellow;
       // colorNotifiers[index2].value = Colors.purple;
-      double tempVal = values[index1];
+      int tempVal = values[index1];
       values[index1] = values[index2];
       values[index2] = tempVal;
       valueNotifiers[index1].value = values[index1];
