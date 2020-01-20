@@ -2,33 +2,36 @@ import 'package:flutter/material.dart';
 import 'package:sort/bubbleSort.dart';
 import 'package:sort/valueController.dart';
 import 'dart:math';
+import 'mergeSort.dart';
+import 'quickSort.dart';
+import 'radixSort.dart';
+import 'selectionSort.dart';
 import 'wait.dart';
 
 double numBars = 50;
 double barWidth = 2;
-double speed = 90;
+double speed = 240;
 double containerWidth;
 String sortMethod = "bubble sort";
 void main() {
-  runApp(MyApp());
+  runApp(App());
 }
-// class App extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     return MaterialApp(
-//       title: 'Title',
-//       theme: kThemeData,
-//       home: HomePage(),
-//     );
-//   }
-// }
+class App extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Sort Visualizer',
+      theme: ThemeData( primarySwatch: Colors.indigo,),
+      home: MyApp(),
+    );
+  }
+}
 class MyApp extends StatefulWidget {
   @override
   _MyAppState createState() => _MyAppState();
 }
 
 class _MyAppState extends State<MyApp> {
-
   void sortStartVisualize(ValueController valueController){
     switch(sortMethod){
       case "bubble sort" : {
@@ -63,13 +66,8 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context){
     // int numBars = 20;
-    ValueController valueController = new ValueController(numBars.toInt(),speed);
-    return MaterialApp(
-      title: 'Sort Visualizer',
-      theme: ThemeData(
-        primarySwatch: Colors.indigo,
-      ),
-      home: Scaffold(
+    ValueController valueController = new ValueController(numBars.toInt(),speed,MediaQuery.of(context).size.height *0.7);
+    return  Scaffold(
         appBar: AppBar(
           title: Text('Sort Visualizer'),
           actions: <Widget>[
@@ -145,8 +143,8 @@ class _MyAppState extends State<MyApp> {
                         child: Slider(
                             min: 5.0,
                             max: 600,
-                            activeColor: Colors.black,
-                            inactiveColor: Colors.pink,
+                            activeColor: Colors.green,
+                            inactiveColor: Colors.grey,
                             value: speed,
                             onChanged: (newRating){
                               setState(() {
@@ -171,19 +169,16 @@ class _MyAppState extends State<MyApp> {
         ),
         body: Center(
           child: Container(
-                    width:  1300,
-                    height: 500,
+                    width: MediaQuery.of(context).size.width*0.96,
+                    height: MediaQuery.of(context).size.width*0.390,
                     child: BarRow(valueController)
                     ),
         ),
-              
-            
         floatingActionButton: FloatingActionButton(
           child: Text('sort'),
           onPressed: () => sortStartVisualize(valueController) ,
         ),
-        ),
-      );
+        );
   }
 }
 
