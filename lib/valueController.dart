@@ -4,7 +4,7 @@
 import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
-import 'package:sort/wait.dart';
+import 'wait.dart';
 
 class ValueController {
   int numBars;
