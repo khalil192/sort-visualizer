@@ -4,14 +4,24 @@ import 'package:sort/valueController.dart';
 import 'dart:math';
 import 'wait.dart';
 
-double numBars = 30;
-double barWidth = 5;
+double numBars = 50;
+double barWidth = 2;
 double speed = 90;
+double containerWidth;
 String sortMethod = "bubble sort";
 void main() {
   runApp(MyApp());
 }
-
+// class App extends StatelessWidget {
+//   @override
+//   Widget build(BuildContext context) {
+//     return MaterialApp(
+//       title: 'Title',
+//       theme: kThemeData,
+//       home: HomePage(),
+//     );
+//   }
+// }
 class MyApp extends StatefulWidget {
   @override
   _MyAppState createState() => _MyAppState();
@@ -55,6 +65,10 @@ class _MyAppState extends State<MyApp> {
     // int numBars = 20;
     ValueController valueController = new ValueController(numBars.toInt(),speed);
     return MaterialApp(
+      title: 'Sort Visualizer',
+      theme: ThemeData(
+        primarySwatch: Colors.indigo,
+      ),
       home: Scaffold(
         appBar: AppBar(
           title: Text('Sort Visualizer'),
@@ -67,7 +81,7 @@ class _MyAppState extends State<MyApp> {
                           iconSize: 24,
                           elevation: 16,
                           style: TextStyle(
-                            color: Colors.deepPurple
+                            color: Colors.black
                           ),
                           underline: Container(
                             height: 2,
@@ -97,7 +111,7 @@ class _MyAppState extends State<MyApp> {
                         height: 20,
                         child: Slider(
                             min: 5.0,
-                            max: 100,
+                            max: 350,
                             activeColor: Colors.black,
                             inactiveColor: Colors.pink,
                             value: numBars,
@@ -130,7 +144,7 @@ class _MyAppState extends State<MyApp> {
                         height: 20,
                         child: Slider(
                             min: 5.0,
-                            max: 120,
+                            max: 600,
                             activeColor: Colors.black,
                             inactiveColor: Colors.pink,
                             value: speed,
@@ -155,19 +169,15 @@ class _MyAppState extends State<MyApp> {
             ],)
           ],
         ),
-        body: SafeArea(
-            child: Padding(
-              padding: const EdgeInsets.all(18.0),
-              child: Align(
-                alignment: Alignment.bottomCenter,
-                child: SizedBox(
-                  width: 1000,
-                  height: 500,
-                  child: BarRow(valueController)
-                  ),
-              ),
-            ),
+        body: Center(
+          child: Container(
+                    width:  1300,
+                    height: 500,
+                    child: BarRow(valueController)
+                    ),
         ),
+              
+            
         floatingActionButton: FloatingActionButton(
           child: Text('sort'),
           onPressed: () => sortStartVisualize(valueController) ,
@@ -190,7 +200,7 @@ class BarRow extends StatelessWidget {
     //   },
     // );
     return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       crossAxisAlignment: CrossAxisAlignment.end,
       children: <Widget>[
         for(int i=0;i<valueController.numBars;i++) ValueListenableBuilder(
@@ -235,7 +245,7 @@ class _BarState extends State<Bar> {
       valueListenable: widget.change,
       builder: (context,value,child){ 
           return Padding(
-        padding: const EdgeInsets.all(2.0),
+        padding: const EdgeInsets.all(0.5),
         child: SizedBox(
           width: barWidth,
           height: widget.val.value.toDouble()*5,
