@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:sort/bubbleSort.dart';
-import 'package:sort/valueController.dart';
+import 'bubbleSort.dart';
+import 'valueController.dart';
 import 'dart:math';
 import 'mergeSort.dart';
 import 'quickSort.dart';
