@@ -7,6 +7,7 @@ import 'quickSort.dart';
 import 'radixSort.dart';
 import 'selectionSort.dart';
 import 'wait.dart';
+import 'RevSelectionSort.dart';
 
 double numBars = 50;
 double barWidth = 2;
@@ -32,6 +33,7 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  ValueController valueController;
   void sortStartVisualize(ValueController valueController){
     switch(sortMethod){
       case "bubble sort" : {
@@ -60,19 +62,35 @@ class _MyAppState extends State<MyApp> {
       }
       break;
     }
-      
   }
-
+   reverseData(){
+     RevSelectionSort revSelectionSort = new RevSelectionSort(valueController);
+     revSelectionSort.sort();
+  }
   @override
   Widget build(BuildContext context){
     // int numBars = 20;
-    ValueController valueController = new ValueController(numBars.toInt(),speed,MediaQuery.of(context).size.height *0.7);
+    valueController = new ValueController(numBars.toInt(),speed,MediaQuery.of(context).size.height *0.7);
     return  Scaffold(
         appBar: AppBar(
           title: Text('Sort Visualizer'),
           actions: <Widget>[
             Row(
               children: <Widget>[
+                RaisedButton(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: new BorderRadius.circular(10.0),
+                      side : BorderSide(color: Colors.white)
+                    ),
+                    onPressed: ()=>{
+                      // setState(() {
+                      reverseData(),
+                      // }
+                      // )
+                      },
+                      child: Text("reverse data"),
+                  ),
+                  SizedBox(width: 10,),
                  DropdownButton<String>(
                           value: sortMethod,
                           icon: Icon(Icons.arrow_downward),
@@ -109,7 +127,7 @@ class _MyAppState extends State<MyApp> {
                         height: 20,
                         child: Slider(
                             min: 5.0,
-                            max: 350,
+                            max: 600,
                             activeColor: Colors.black,
                             inactiveColor: Colors.pink,
                             value: numBars,
@@ -169,8 +187,8 @@ class _MyAppState extends State<MyApp> {
         ),
         body: Center(
           child: Container(
-                    width: MediaQuery.of(context).size.width*0.96,
-                    height: MediaQuery.of(context).size.width*0.390,
+                    width: MediaQuery.of(context).size.width*0.98,
+                    height: MediaQuery.of(context).size.height,
                     child: BarRow(valueController)
                     ),
         ),
@@ -185,7 +203,6 @@ class _MyAppState extends State<MyApp> {
 class BarRow extends StatelessWidget {
   final ValueController valueController;
   BarRow(this.valueController);
-
   @override
   Widget build(BuildContext context) {
     // return ListView.builder(
@@ -195,7 +212,7 @@ class BarRow extends StatelessWidget {
     //   },
     // );
     return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.end,
       children: <Widget>[
         for(int i=0;i<valueController.numBars;i++) ValueListenableBuilder(
@@ -240,7 +257,7 @@ class _BarState extends State<Bar> {
       valueListenable: widget.change,
       builder: (context,value,child){ 
           return Padding(
-        padding: const EdgeInsets.all(0.5),
+        padding: const EdgeInsets.all(0.0125),
         child: SizedBox(
           width: barWidth,
           height: widget.val.value.toDouble()*5,

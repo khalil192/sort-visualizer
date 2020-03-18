@@ -19,7 +19,8 @@ class ValueController {
     changeNotifiers = new List<ValueNotifier<int>>(numBars);
     valueNotifiers = new List<ValueNotifier<int>> (numBars);
     for(int i=0;i<numBars;i++){
-      values[i]  = ((randomNumberGenerator.nextDouble() * 100 ).toInt()) % maxHeight.toInt();
+      values[i]  = max(((randomNumberGenerator.nextDouble() * 100 ).toInt()) % maxHeight.toInt() - 4, 1);
+      print(values[i]);
       valueNotifiers[i] = new ValueNotifier(values[i]);
       changeNotifiers[i] = new ValueNotifier(0);
     }

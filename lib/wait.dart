@@ -7,6 +7,7 @@ Future sleepSum(int valueOne, int valueTwo) {
 Future wait(int speed) {
   // final milliseconds = lerpDouble(100, 1, speed).toInt();
   // return Future.delayed(Duration(milliseconds: milliseconds));
-  return Future.delayed(Duration(microseconds: 520- speed));
+  return Future.delayed(Duration(microseconds: 520 - speed));
+
 
 }
